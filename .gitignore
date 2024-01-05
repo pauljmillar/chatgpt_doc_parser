@@ -3,3 +3,4 @@ _pycache__
 *.swp
 *.db
 *.log
+openapi_key.txt

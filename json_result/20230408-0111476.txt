@@ -1,0 +1,3 @@
+{
+  "Offer Description": "High-speed Internet with fast download speeds of 25 Mbps on every plan. No hard data limits - stay connected at reduced speeds if you exceed your plan data. Free standard installation for new Lease subscribers. Save $25 for 6 months. Offer not valid on 15 GB plan. After 6 months, plans revert to the standard monthly fee. New residential subscribers only. Other terms may apply. Limited-time offer."
+}

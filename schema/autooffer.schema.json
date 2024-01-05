@@ -1,0 +1,50 @@
+{
+  "$id": "https://mintel.com/autooffer.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "vehicle offer": {
+      "$anchor": "VehicleOfferSchema",
+      "type": "object",
+      "properties": {
+        "Vehicle Model": { "type": "string", "description": "Vehicle model"  },
+        "Vehicle Type": { "type": "string", "description": "Vehicle type; should be one of SUV, Truck, Sedan, Crossover" },
+        "Fuel Type": { "type": "string", "description": "Vehicle fuel type; should be one of gas, electric, hybrid"},
+        "Vehicle Launch": { "type": "string", "description": "Whether this is a new vehicle type; Y or N" },
+        "Offer Cash Back": { "type": "number", "description": "If there is a cash allowance offer on the vehicle, how much ($)"},
+        "Offer Loan APR": { "type": "number", "description": "If there is a loan offer on the vehicle, what is the APR being offered (%)"},
+        "Offer Loan Monthly": { "type": "number", "description": "If there is a loan offer on the vehicle, what is the monthly payment ($)"},
+        "Offer Loan Down": { "type": "number", "description": "If there is a loan offer on the vehicle, how much down payment is required ($)"},
+        "Offer Loan # Months": { "type": "number", "description": "If there is a loan offer on the vehicle, how many months"},
+        "Offer Lease": { "type": "number", "description": "If there is a lease offer for the vehicle, what is the monthly lease amount ($)" },
+        "Offer Lease Down": { "type": "number", "description": "If there is a lease offer for the vehicle, how much down payment is required ($)" },
+        "Offer Lease Months": { "type": "number", "description": "If there is a lease offer on the vehicle, how many months."}
+      }
+    },
+	"service offer": {
+      "$anchor": "ServiceOfferSchema",
+      "type": "object",
+      "properties": {
+        "Offer Service": { "type": "string", "description": "If there is a a promotional offer for auto maintenance or repair service, including oil, tire rotation, brakes, tire replacement, tune up, what is the text of that offer." },
+        "Offer Type": { "type": "string", "description": "If there is a a promotional offer for auto maintenance or repair service, is it one of (cash rebate | discount | free merchandise | free service)." },
+        "Offer Amount": { "type": "number", "description": "If there is a a promotional offer for auto maintenance or repair service, what is the amount of that offer." },
+        "Offer Expiration": { "type": "string", "description": "If there is a a promotional offer for auto maintenance or repair service, when does it expire."}
+      }
+    },
+    "automotive offer": {
+      "$anchor": "AutomotiveOfferSchema",
+      "type": "object",
+      "properties": {
+        "Offer Issuer": { "type": "string", "description": "The vehicle manufacturer if this ad is for vehicle sales.  This should be the service center if ad is for verhicle service like oil or tire service."  },
+        "Offer Close": { "type": "date", "description": "If there is any offer, what date does it end."},
+        "vehicle offers": {
+          "type": "array",
+          "items": { "$ref": "#VehicleOfferSchema" }
+		}, 
+		"service offers": {
+          "type": "array",
+          "items": { "$ref": "#ServiceOfferSchema" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "Offer Origin": { "type": "string", "description": "The company that is extending the offer contained in the mail piece: Authorized Agent/Dealer or Service Provider/Manufacturer"},
+    "Telecom Type": { "type": "string", "description": "The delivery method of the internet being offered: Cable, DSL, Fiber Optic, Satellite, or Not Specified"},
+    "Incentive Type": { "type": "string", "description": "Buy One Get One Free, Check, Equipment Discount, Free Minutes, Free Trial, Gift Card/Certificate, Instillation Discount, Installation Discount, Instant Credit, Premium Item, Rebate, Service Discount, or Sweepstake"},
+    "Offer Description": { "type": "string", "description": "Description of all promotions in the piece. The description should include any incentives or specific details not captured in the pricing"},
+    "Offer Monthly Cost": { "type": "number", "description": "The cost per month during the introductory offer term" },
+    "Offer Term": { "type": "number", "description": "The duration in months of the introductory price"},
+    "Download Speed": { "type": "number", "description": "Internet download speed, in Mbps"}
+  }
+}
