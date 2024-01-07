@@ -21,10 +21,17 @@ import zipfile
 
 
 from openai import OpenAI
-from chatgpt_wrapper import ChatGPT
+#from chatgpt_wrapper import ChatGPT
+from dotenv import load_dotenv
 
+load_dotenv()
 
-
+AWS_KEY = os.getenv("AWS_KEY")
+CHATGPT_KEY = os.getenv("CHATGPT_KEY")
+GENERAL_SCHEMA = "general.schema.json"
+AUTO_SERVICE_SCHEMA = "auto_service.schema.json"
+AUTO_SALES_SCHEMA = "auto_sales.schema.json"
+TELECOM_INTERNET_SCHEMA = "telecom_internet.schema.json"
 
 
 def do_unzips():
@@ -49,9 +56,25 @@ def do_unzips():
     print("Done unzipping")
 
 
-def get_schema(promo_text):
+def get_schema(industry):
     schema_filename = ""
 
+    match industry:
+        case "Auto-Sales":
+            schema_filename = "auto_sales.schema.json"
+
+        case "Auto-Service":
+            schema_filename = "auto_service.schema.json"
+
+        case "Telecom-Internet":
+            schema_filename = "telecom_internet.schema.json"
+
+        case _:
+            print("The industry does not match.")
+
+    print("Choosing schema: " + schema_filename)
+    return schema_filename
+'''
     #auto
     if any(re.findall(r'car |auto|truck |suv |motorcycle ', promo_text, re.IGNORECASE)) and any(re.findall(r'service| oil| tire|repair', promo_text, re.IGNORECASE)):
         schema_filename = "auto_service.schema.json"
@@ -62,18 +85,32 @@ def get_schema(promo_text):
         schema_filename = "telecom_internet.schema.json"
     #else: Call chatgpt to figure out what category
 
-    print("Choosing schema: "+ schema_filename)
-    return schema_filename
+
+'''
+
+def call_chatgpt(client, prompt):
+    chat_completion = client.chat.completions.create(
+        model="gpt-3.5-turbo-1106",
+        response_format={"type": "json_object"},
+        messages=[
+            {"role": "system", "content": "Provide output in valid JSON"},
+            {"role": "user", "content": prompt}
+        ]
+    )
+    # prompt, response = scrape_via_prompt(chat, page_text, schema)
+    response = chat_completion.choices[0].message.content
+    # print(response)
+    return response
 
 
-def call_chatgpt():
+def analyze_texts():
 
     print("Starting to make chatgpt calls ...")
 
     #get key from file, create client
-    f = open("openai_key.txt", "r")
+    #f = open("openai_key.txt", "r")
     client = OpenAI(
-        api_key=f.read()
+        api_key=CHATGPT_KEY
     )
 
     # Specify the directory path
@@ -82,8 +119,6 @@ def call_chatgpt():
     json_result_directory_path = 'json_result'
     schema_directory_path = 'schema'
 
-    chat = ChatGPT(headless=True, browser="firefox")
-    #time.sleep(5)
 
     # Loop through each file in the directory
     for filename in os.listdir(ocr_directory_path):
@@ -92,30 +127,31 @@ def call_chatgpt():
             # Do something with the file, for example, print its name
             print(filename)
 
+            #read in ocr'd text
             with open(os.path.join(ocr_directory_path, filename), "r") as f:
                 page_text = f.read()
 
-            # determine which schema looking at text keywords
-            schema_filename = get_schema(page_text)
+            #read in json schema for general fields: to determine what industry the mail is for
+            with open(os.path.join(schema_directory_path, GENERAL_SCHEMA), "r") as f:
+                general_schema = json.load(f)
+
+            #call chatgpt to figure out what type of text this is, and what schema to use
+            prompt = f"```{page_text}```\n\nThe text above is promotional material. Determine which industry it is for, using the industries in the following JSON schema. Populate the other properties defined in the schema and provide your response in JSON that adheres to the schema.:\n\n```{general_schema}```"
+            response=call_chatgpt(client, prompt)
+            print(response)
+
+            #lookup the schema file name
+            wjdata = json.loads(response)
+            print(wjdata['Offer Industry'])
+            schema_filename = get_schema(wjdata['Offer Industry'])
 
             with open(os.path.join(schema_directory_path, schema_filename), "r") as f:
                 schema = json.load(f)
 
-
-
+            #call chatgppt a 2nd time to get the industry specific fields
             prompt = f"```{page_text}```\n\nWithin the given text, identify the Offer Description and the other attributes described in following JSON schema, and provide them in a JSON representation that strictly follows this schema:\n\n```{schema}```"
-
-            chat_completion = client.chat.completions.create(
-                model="gpt-3.5-turbo-1106",
-                response_format={"type":"json_object"},
-                messages=[
-                    {"role":"system","content":"Provide output in valid JSON"},
-                    {"role": "user", "content": prompt}
-                ]
-            )
-            #prompt, response = scrape_via_prompt(chat, page_text, schema)
-            response = chat_completion.choices[0].message.content
-            #print(response)
+            response=call_chatgpt(client, prompt)
+            print(response)
 
             print("Saving results to", os.path.join(json_result_directory_path, filename))
             with open(os.path.join(json_result_directory_path, filename), "w") as f:
@@ -126,6 +162,27 @@ def call_chatgpt():
             os.rename(os.path.join(ocr_directory_path, filename), os.path.join(ocr_done_directory_path, filename))
     print("Chatgpt calls complete.")
 
+'''
+            # determine which schema looking at text keywords
+            schema_filename = get_schema(page_text)
+
+            with open(os.path.join(schema_directory_path, schema_filename), "r") as f:
+                schema = json.load(f)
+
+
+
+            prompt = f"```{page_text}```\n\nWithin the given text, identify the Offer Description and the other attributes described in following JSON schema, and provide them in a JSON representation that strictly follows this schema:\n\n```{schema}```"
+
+
+            print("Saving results to", os.path.join(json_result_directory_path, filename))
+            with open(os.path.join(json_result_directory_path, filename), "w") as f:
+                #f.write(json.dumps(results, indent=2))
+                f.write(response)
+
+            # if success, move file to done
+            os.rename(os.path.join(ocr_directory_path, filename), os.path.join(ocr_done_directory_path, filename))
+'''
+
 
 
 def do_ocr():
@@ -135,9 +192,13 @@ def do_ocr():
     done_directory_path = 'images_done'
     ocr_directory_path = 'ocr'
 
+    #get key from file
+    #f = open("aws_key.txt", "r")
+    #aws_key=
+
     print("Starting to OCR files...")
-    client = boto3.client('textract', region_name='us-west-2', aws_access_key_id='AKIASNRH2MGAWOTNF45O',
-                          aws_secret_access_key='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')
+    client = boto3.client('textract', region_name='us-west-2', aws_access_key_id='AKIASNRH2MGA4ZH72OFX',
+                          aws_secret_access_key=AWS_KEY)
 
     # Loop through each file in the directory
     for filename in os.listdir(source_directory_path):
@@ -186,7 +247,7 @@ if __name__ == "__main__":
     #ocr on images in the ocr directory
     do_unzips()
     do_ocr()
-    call_chatgpt()
+    analyze_texts()
 
 
 

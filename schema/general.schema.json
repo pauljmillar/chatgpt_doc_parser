@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "Offer Industry": { "type": "string", "description": "Which one of the following industries is the offer for: Auto-Sales, Auto-Service, Banking-Checking, Banking-Savings, Banking-Money Market, Banking-Debit Cards, Banking-Online, Banking-Certificates of Deposit, Banking-Guaranteed Investments, Banking-General, Insurance-Life, Insurance-Health, Insurance-Travel, Insurance-Personal Property and Casualty, Insurance-Commercial Property and Casualty, Insurance-General, Credit Cards, Investment, Mortgage and Loan, Retail, Shipping, Technology, Telecoms, Tobacco, Travel and Leisure."},
+    "Primary Company": { "type": "string", "description": "The company who has sent this offer"},
+    "Offer Type": { "type": "string", "description": "If the intent of the piece is to acquire new business, Offer Type is Acquisition."},
+    "Incentive Description": { "type": "number", "description": "What are the main offers being promoted by the text"},
+	"Mailing priority": { "type": "number", "description": "Standard, First Class, Presort, Priority"}
+  }
+}

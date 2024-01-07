@@ -3,4 +3,14 @@ _pycache__
 *.swp
 *.db
 *.log
-openapi_key.txt
+.env
+*key.txt
+openai_key.txt
+aws_key.txt
+
+#data directories
+images/
+images_done/
+json_result/
+ocr/
+ocr_done/
