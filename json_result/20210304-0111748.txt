@@ -1,8 +1,0 @@
-{
-  "Offer Issuer": "Shores Automotive",
-  "Offer Description": "Oil & filter change with full synthetic oil",
-  "Offer Type": "discount",
-  "Offer Amount": 104.95,
-  "Offer Expiration": "Cannot combine with any other offer. For a limited time only.",
-  "Warranty": "2 years / 24k miles"
-}

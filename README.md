@@ -1,18 +1,38 @@
 # GPT Document Extraction
 
-This is a proof-of-concept for using ChatGPT to extract structured data from messy text documents like scanned/OCR'd PDFs and difficult forms.
+This is a proof-of-concept for using ChatGPT to extract structured data scanned images.
 
-It works by asking ChatGPT to turn text documents (found in an input JSON file or a text file) into a JSON record that matches a given JSON Schema specification.
+It works in 3 processes that could be split out. Each uses files in a directory as a queue, and ends by moving the file(s) to a different directory. 
 
-If your input data is a text file where each line is a document, you can use the script like this:
+1. Unzip
+2. Call OCR API (currently AWS Textract)
+3.  Call ChatGPT to determine the category of the OCR'd text (JSON output) a JSON record that matches a given JSON Schema specification. Then call ChatGPT to extract industry-specific fields from the OCR'd text (JSON output)
+
+The 3 processes are run sequentially, 1, then 2, then 3.  These could be separate processes running in parallel. The whole sequence of processes is run by calling:
 
 ```
-./gpt-extract.py --input-type text infile.txt schema.json output.json
+./gpt-extract.py 
 ```
 
-This would extract each line in infile, using schema.json and write extracted data to output.json. You can find an example JSON schema down below in the "JSON schema file" section.
+The directory structure and function is:
 
-If your input data is JSON, you'll need to tell the script how to find the documents (and, optionally how to find a unique ID for each recod). The only kind of supported JSON is a list of JSON objects. Your JSON input data should look something like this:
+```
+> ls
+- images
+- images_done
+- ocr
+- ocr_done
+- json_result
+- schemas
+```
+#### images 
+Images (jpg, png) or .zip files full of images are placed in the images directory.  If zipped, the first process will unzip the images, leaving them in the images directory.
+
+#### images_done
+Once the OCR service has successfully produced a text output file for an image, the image is moved to the image_done directory.
+
+#### ocr
+For each image, the AWS OCR service is called, writing the text output to a file with the same name without the _1 or _2 at the end.  Files with the sme
 
 ```
 [{
@@ -34,40 +54,11 @@ Note that the output file (`output.json`), if it exists, needs to be valid JSON 
 
 ## Setup
 
-This repo depends on [ChatGPT-wrapper][wrapper-main], which is included as a submodule of this repo. Clone this repo like:
-
+Cloning will set up 6 directories
 ```
-git clone --recurse-submodules https://github.com/brandonrobertz/chatgpt-document-extraction
+git clone  git@github.com:pauljmillar/chatgpt_doc_parser.git
 cd chatgpt-document-extraction
-```
-
-If you've already cloned the repo you can get and/or update the submodule with this:
-
-```
-git submodule update --init --recursive
-```
-
-Then install ChatGPT-wrapper and [set up Playwright][playwright-setup]:
-
-```
-cd chatgpt-wrapper/
 pip install .
-cd ..
-playwright install
-```
-
-You need to login, so run the following command and log into ChatGPT:
-
-```
-chatgpt install
-```
-
-## Extraction
-
-Once you're set up, you can extract structured data, 
-
-```
-./gpt-extract.py --headless --input-type infile.txt schema.json output.json
 ```
 
 ### Input data spec

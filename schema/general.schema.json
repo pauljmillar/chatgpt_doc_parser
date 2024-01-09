@@ -4,8 +4,15 @@
   "properties": {
     "Offer Industry": { "type": "string", "description": "Which one of the following industries is the offer for: Auto-Sales, Auto-Service, Banking-Checking, Banking-Savings, Banking-Money Market, Banking-Debit Cards, Banking-Online, Banking-Certificates of Deposit, Banking-Guaranteed Investments, Banking-General, Insurance-Life, Insurance-Health, Insurance-Travel, Insurance-Personal Property and Casualty, Insurance-Commercial Property and Casualty, Insurance-General, Credit Cards, Investment, Mortgage and Loan, Retail, Shipping, Technology, Telecoms, Tobacco, Travel and Leisure."},
     "Primary Company": { "type": "string", "description": "The company who has sent this offer"},
-    "Offer Type": { "type": "string", "description": "If the intent of the piece is to acquire new business, Offer Type is Acquisition."},
-    "Incentive Description": { "type": "number", "description": "What are the main offers being promoted by the text"},
-	"Mailing priority": { "type": "number", "description": "Standard, First Class, Presort, Priority"}
-  }
+    "Secondary Company": { "type": "string", "description": "The company that is also taking part in the offer, but is not the Primary servicing company."},
+    "Business Type": { "type": "string", "description": "The market that the media piece is targeting: either Individual Consumer, Business, or Agent."},	
+    "Mailing Type": { "type": "string", "description": "The classification used to describe the communication between a business and a (potential) customer. Should be one of: Acquisition, Alert, Cross Sell (Retention), Follow Up (Acquisition), Follow Up (Retention), Informational, Loyalty, Phishing, Renewal (Retention), Statement, Upgrade (Retention), Welcome Communicatio, Win Back."},
+    "Incentive": { "type": "number", "description": "A product, service, or benefit offered to customers for completing the task required by the company, given only one-time or for a limited time only.  Types of incentives may include free shipping, bonus rewards, free merchandise, gift cards. All applicable incentives should be captured."},
+    "Incentive Type": { "type": "string", "description": "The categorization of the incentive offered to customers. Should be one of: Accelerated Rewards, Account Credit, Bonus Rewards, Cash, Commission Bonus, Coupon/Gift Card, Discount, Fee Waived, Free Merchandise, Free Service, Sweepstakes Entry, Travel, Unlisted."},
+	"Post Indicia": { "type": "string", "description": "A printed or stamped indication on a letter that shows postage prepayment by an authorized mailer. One of: Metered, Permit, or Stamped."},
+	"Post Type": { "type": "string", "description": "The type of postage on the outer envelope of the mail pack that indicates how the mail was sent. One of: Standard, First Class."},
+	"Presorted": { "type": "string", "description": "Indication if the mailpiece has been presorted by the postal service; either Y or N."}
+ 	"Pre-screen Opt Out Disclosure": { "type": "string", "description": "The disclosure contained on media piece that informs the consumer of his or her right to stop receiving Pre-Screened offers."},
+ 	"Response Mechanism (Call to Action)": { "type": "string", "description": "The channels that the recipient may use to reply to an offer. One of 800 Telephone Number, Augmented Reality, Customer Visit, Email, Local Call, Mail, Mobile App, Online, QR Code, Social Media, Text Message, No Response Requested."}
+ }
 }

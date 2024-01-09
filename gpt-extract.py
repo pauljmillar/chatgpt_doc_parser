@@ -138,7 +138,12 @@ def analyze_texts():
             #call chatgpt to figure out what type of text this is, and what schema to use
             prompt = f"```{page_text}```\n\nThe text above is promotional material. Determine which industry it is for, using the industries in the following JSON schema. Populate the other properties defined in the schema and provide your response in JSON that adheres to the schema.:\n\n```{general_schema}```"
             response=call_chatgpt(client, prompt)
-            print(response)
+            #print(response)
+
+            print("Saving general results to", os.path.join(json_result_directory_path, filename))
+            with open(os.path.join(json_result_directory_path, filename), "w") as f:
+                #f.write(json.dumps(results, indent=2))
+                f.write(response)
 
             #lookup the schema file name
             wjdata = json.loads(response)
@@ -151,7 +156,7 @@ def analyze_texts():
             #call chatgppt a 2nd time to get the industry specific fields
             prompt = f"```{page_text}```\n\nWithin the given text, identify the Offer Description and the other attributes described in following JSON schema, and provide them in a JSON representation that strictly follows this schema:\n\n```{schema}```"
             response=call_chatgpt(client, prompt)
-            print(response)
+            #print(response)
 
             print("Saving results to", os.path.join(json_result_directory_path, filename))
             with open(os.path.join(json_result_directory_path, filename), "w") as f:
