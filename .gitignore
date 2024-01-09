@@ -5,12 +5,6 @@ _pycache__
 *.log
 .env
 *key.txt
-openai_key.txt
-aws_key.txt
 
-#data directories
-images/*
-images_done/*
-json_result/*
-ocr/*
-ocr_done/*
+
+#data directories have their own .gitignore files
