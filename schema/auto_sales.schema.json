@@ -1,27 +1,36 @@
 {
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "Vehicle Model": { "type": "string", "description": "Vehicle model"  },
-    "Vehicle Type": { "type": "string", "description": "Vehicle type; should be one of ATV, Compact/Economy, Coupe, Crossover, Luxury Couple, Luxury Crossover, Luxury Full Size, Luxury Minivan, Luxury Sedan, Luxury Sport Utility Truck, Luxury Sport Wagon, Luxury SUV, Luxury Truck, Minivan, Motorcycle, RV, Scooter, Sedan/Midsize, Sport Utility Truck, Sport Wagon, SUV, Truck, Van" },
-    "Vehicle Fuel Type": { "type": "string", "description": "Vehicle fuel type; should be one of gas, electric, hybrid"},
-    "Vehicle Launch": { "type": "string", "description": "Whether the piece contains information about a newly revised vehicle or a totally new car which has been added to the manufacturer’s line-up: Y or N" },
-    "Offer Origin": { "type": "string", "description": "The type of company that originated the offer, either Dealer, Manufacturer, or Service Center."  },
-    "Vehicle Representation": { "type": "string", "description": "If Offer Origin = Manufacturer, this field should be set to either Cross Division, Division Line-Up, or Single. If the piece describes only one vehicle make and model, it should be Single. If the piece features multiple vehicles from the same division (all Buick for example), this field should say Division Line-Up.  If the piece features multiple vehicles from different divisions (one Buick Enclave and one Chevrolet Cobalt, for example) this field should say Cross Division"  },
-    "Offer Description": { "type": "string", "description": "A brief text description of the best promotional offer"},
-    "Offer Expiration": { "type": "string", "description": "When does the promotional offer expire."},
-    "Offer Cash Allowance": { "type": "number", "description": "If there is a cash back or rebate offer when buying a vehicle, how much ($)"},
-	"Offer Loan Money Down": { "type": "number", "description": "The amount of money the buyer will have to give a car dealer before securing financing on the balance of the car price. This may also be called a Down Payment."},
-    "Offer APR": { "type": "number", "description": "The annual percentage rate (APR) for the loan and/or lease, expressed as a percentage. Sometimes referenced as 0% Financing, or offer APR.(%)"},
-    "Offer Loan Monthly": { "type": "number", "description": "If there is a loan offer on the vehicle, what is the monthly payment ($)"},
-    "Offer Loan Down": { "type": "number", "description": "If there is a loan offer on the vehicle, how much down payment is required ($)"},
-    "Offer Loan # Months": { "type": "number", "description": "If there is a loan offer on the vehicle, how many months"},
-    "Offer Lease": { "type": "number", "description": "If there is a lease offer for the vehicle, what is the monthly lease amount ($)" },
-    "Offer Lease Down": { "type": "number", "description": "If there is a lease offer for the vehicle, how much down payment is required ($)" },
-    "Offer Lease Months": { "type": "number", "description": "If there is a lease offer on the vehicle, how many months."},
-    "Purchase Discount": { "type": "number", "description": "The dollar amount discounted from the Manufacturer Suggested Retail Price (MSRP). May also be referred to as Bonus Cash or Discount."},
-    "Trade-In Allowance": { "type": "number", "description": "The reduction in the price of a car, in dollars, that occurs when a previously owned car is used as collateral towards the purchase of a vehicle."},
-    "Vehicle Financing Type": { "type": "number", "description": "If the piece includes financing options for either purchasing and/or leasing a vehicle: field should be either Lease or Loan."},
-	"Warranty": { "type": "string", "description": "If there is a warranty being offered, how many miles and years."}
-  }
+	"description": "A representation of a promotional offers for vehicles.",
+	"type": "object",
+	"properties": {
+		"Vehicle Launch": { "type": "string", "description": "Whether the piece contains information about a newly revised vehicle or a totally new car which has been added to the manufacturer’s line-up.", "enum": ["Yes", "No"]},
+		"Offer Origin": { "type": "string", "description": "The type of company that originated the offers.", "enum": ["Dealer", "Manufacturer", "Service Center"]},
+		"Vehicle Representation": { "type": "string", "enum": ["Single", "Division Line-Up", "Cross Division"], "description": "If more than one vehicle is described in the text, set to Division Line-Up. If vehicles are from different divisions, set to Cross Division. If only 1 vehicle is mentioned, set to Single."},
+		"Vehicle Offers": {
+			"type": "array",
+			"items": { "$ref": "#/$defs/Vehicle"}
+		}
+	},	
+	"$defs": {
+		"Vehicle": {
+			"type": "object",
+			"description": "For each vehicles with an offer.",
+			"properties": {
+				"Vehicle Model": { "type": "string", "description": "Vehicle model."},
+				"Vehicle Type": { "type": "string", "description": "Vehicle type.", "enum": ["ATV", "Compact/Economy", "Coupe", "Crossover", "Luxury Coupe", "Luxury Crossover", "Luxury Full Size", "Luxury Minivan", "Luxury Sedan", "Luxury Sport Utility Truck", "Luxury Sport Wagon", "Luxury SUV", "Luxury Truck", "Minivan", "Motorcycle", "RV", "Scooter", "Sedan/Midsize", "Sport Utility Truck", "Sport Wagon", "SUV", "Truck", "Van"]},
+				"Vehicle Fuel Type": { "type": "string", "description": "Vehicle fuel type", "enum": ["gas", "electric", "hybrid"]},
+				"Offer Description": { "type": "string", "description": "A brief text description of the offer"},
+				"Offer Expiration": { "type": "string", "description": "When does the promotional offer expire."},
+				"Offer Cash Allowance": { "type": "number", "description": "If there is a cash back or rebate offer when buying a vehicle, how much ($)"},
+				"Offer Loan Money Down": { "type": "number", "description": "The amount of money the buyer will have to give a car dealer before securing financing on the balance of the car price. This may also be called a Down Payment."},
+				"Offer APR": { "type": "number", "description": "The annual percentage rate (APR) for the loan and/or lease, expressed as a percentage. Sometimes referenced as 0% Financing, or offer APR.(%)"},
+				"Offer Loan Term": { "type": "number", "description": "If there is a loan offer on the vehicle, how many months?"},
+				"Offer Loan Money Down": { "type": "number", "description": "If there is a loan offer on the vehicle, how much down payment is required ($)."},
+				"Purchase Discount": { "type": "number", "description": "The dollar amount discounted from the Manufacturer Suggested Retail Price (MSRP). May also be referred to as Bonus Cash or Discount."},
+				"Leasing Discount": { "type": "number", "description": "The dollar amount discounted from the Manufacturer Suggested Retail Price (MSRP). Leasing discount is a similar function to Cash Allowance, but the discount goes toward a vehicle lease, not a purchase."},
+				"Trade-In Allowance": { "type": "number", "description": "The reduction in the price of a car, in dollars, that occurs when a previously owned car is used as collateral towards the purchase of a vehicle."},
+				"Vehicle Financing Type": { "type": "number", "description": "If the piece includes financing options for either purchasing and/or leasing a vehicle: field should be either Lease or Loan."},
+				"Warranty": { "type": "string", "description": "If there is a warranty being offered, how many miles and years."}
+			}
+		}
+	}
 }

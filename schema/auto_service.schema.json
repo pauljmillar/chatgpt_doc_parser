@@ -1,12 +1,23 @@
 {
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "Offer Issuer": { "type": "string", "description": "The service center name that is offering the verhicle service - oil, tire, or other auto service."  },
-    "Offer Description": { "type": "string", "description": "If there is a a promotional offer for auto maintenance or repair service, including oil, tire rotation, brakes, tire replacement, tune up, what is the description of that offer." },
-    "Offer Type": { "type": "string", "description": "If there is a a promotional offer for auto maintenance or repair service, is it one of (cash rebate | discount | free merchandise | free service)." },
-    "Offer Amount": { "type": "number", "description": "If there is a a promotional offer for auto maintenance or repair service, what is the amount of that offer." },
-    "Offer Expiration": { "type": "string", "description": "If there is a a promotional offer for auto maintenance or repair service, when does it expire."},
-	"Warranty": { "type": "string", "description": "If there is a warranty being offered, how many miles and years."}
-  }
+	"description": "A representation of a promotional offers for vehicle service.",
+	"type": "object",
+	"properties": {
+		"Offer Origin": { "type": "string", "description": "The type of company that originated the offers.", "enum": ["Dealer", "Manufacturer", "Service Center"]},
+		"Service Offers": {
+			"type": "array",
+			"items": { "$ref": "#/$defs/Offer"}
+		}
+	},	
+	"$defs": {
+		"Offer": {
+			"type": "object",
+			"description": "For each auto service offer.",
+			"properties": {
+				"Offer Description": { "type": "string", "description": "A brief text description of the offer. This could be oil change, tire rotation, tune-up, maintenance, repairs, warranty extension, etc."},
+				"Offer Expiration": { "type": "string", "description": "When does the promotional offer expire."},
+				"Offer Amount": { "type": "number", "description": "What is the maintenance or repair service offer amount?." },
+				"Warranty": { "type": "string", "description": "If there is a warranty being offered, how many miles and years."}
+			}
+		}
+	}
 }
