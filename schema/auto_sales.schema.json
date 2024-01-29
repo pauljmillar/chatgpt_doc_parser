@@ -4,7 +4,7 @@
 	"properties": {
 		"Vehicle Launch": { "type": "string", "description": "Whether the piece contains information about a newly revised vehicle or a totally new car which has been added to the manufacturer’s line-up.", "enum": ["Yes", "No"]},
 		"Offer Origin": { "type": "string", "description": "The type of company that originated the offers.", "enum": ["Dealer", "Manufacturer", "Service Center"]},
-		"Vehicle Representation": { "type": "string", "enum": ["Single", "Division Line-Up", "Cross Division"], "description": "If more than one vehicle is described in the text, set to Division Line-Up. If vehicles are from different divisions, set to Cross Division. If only 1 vehicle is mentioned, set to Single."},
+		"Vehicle Representation": { "type": "string", "enum": ["Division Line-Up", "Single", "Cross Division"], "description": "If multiple vehicles are promoted, set to Division Line-Up."},
 		"Vehicle Offers": {
 			"type": "array",
 			"items": { "$ref": "#/$defs/Vehicle"}

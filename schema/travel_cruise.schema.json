@@ -1,0 +1,30 @@
+{
+	"description": "A representation of a promotional offers for cruise lines.",
+	"type": "object",
+	"properties": {
+		"Offer Origin": { "type": "string", "description": "The type of company that originated the offers.", "enum": ["Airline", "Board of Tourism", "Car Rental", "Credit Card", "Cruise Line", "Hotel/Resort", "Telecommunications Company", "Timeshare", "Travel Agent"]},
+		"Loyalty Program - Is Member": { "type": "string", "description": "The piece was sent to a member of a loyalty program. Indications that a person is a loyalty program member could be, but is not limited to, an account number, awards statement, or level.", "enum": ["Yes", "No"]},
+		"Loyalty Program - Level Mentioned": { "type": "string", "description": "The piece mentions the current loyalty program level of the member. Pieces that state how close a member is to the next level will only have this selected if it also identifies their current level.", "enum": ["Yes", "No"]},
+		"Loyalty Program - Statement Listed": { "type": "string", "description": "The piece includes a statement or listing of current awards earned", "enum": ["Yes", "No"]},				
+		"Loyalty Program - Statement Listed": { "type": "string", "description": "The piece includes a statement or listing of current awards earned", "enum": ["Yes", "No"]},					
+		"Loyalty Program - Partner Company": { "type": "string", "description": "Any company other than the one associated with the loyalty program that is offering a product or service with a chance to earn rewards. The offer must include an opportunity to earn rewards."},			
+		"Co-Brand Card Mentioned": { "type": "string", "description": "The piece mentions anywhere an offer for a Co-Brand Credit or Debit card. If a picture of the card is listed on the piece, then Co-brand Card Mention will be captured as yes. One or more mentions of a Co-Brand offer will be captured as Yes.", "enum": ["Yes", "No"]}
+		"Offers": {
+			"type": "array",
+			"items": { "$ref": "#/$defs/Offer"}
+		}
+	},	
+	"$defs": {
+		"Offer": {
+			"type": "object",
+			"description": "For each cruise offer.",
+			"properties": {				
+				"Offer Description": { "type": "string", "description": "A brief text description of the offer"},
+				"Offer Expiration": { "type": "string", "description": "When does the promotional offer expire."},
+				"Hotel Brand": { "type": "string", "description": "The hotel brand being represented in the offer, if present."},
+				"Loyalty Offer - Earn/Burn": { "type": "string", "description": "The offer is to Earn or Burn (use) rewards (points or miles)."},
+				"Loyalty Offer": { "type": "string", "description": "The specific details of the offer as described on the piece. The offer must be about ways to earn or use loyalty program rewards."},
+			}
+		}
+	}
+}

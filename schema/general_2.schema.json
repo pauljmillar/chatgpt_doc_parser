@@ -1,0 +1,23 @@
+{
+	"description": "List of incentives promoted in a direct mail campaign",
+	"type": "object",
+	"properties": {
+		"Response Mechanism (Call to Action)": { "type": "string", "description": "All of the channels referenced by the text that the recipient may use to reply to an offer. May be multiple.", "enum": ["Customer Visit", "QR Code to scan", "Local call", "Augmented Reality", "800 Telephone Number", "Email", "Mail", "Mobile App", "Online", "Social Media", "Text Message", "No Response Requested"]},		
+		"Incentives": {
+			"type": "array",
+			"items": { "$ref": "#/$defs/Incentive"}
+		}
+	},
+	"$defs": {
+		"Incentive": {
+			"type": "object",
+			"description": "All incentives should be captured.  A product, service, or benefit offered to customers for completing the task required by the company. Tasks may include opening an account, responding by a certain date, or completing a specified type of transaction.  The offered product, service, or benefit is given only one-time or for a limited time only.  Types of incentives may include free shipping, bonus rewards (if the consumer is receiving a lump sum of points/miles/cash back after meeting incentive requirements), and accelerated rewards (if the consumer is earning points/miles/cash back at a rate higher than the base reward rate for a limited period of time). Anniversary points will not be captured as an incentive, this information should be captured as a key feature.",
+			"properties": {
+				"Incentive Text": { "type": "string", "description": "A product, service, or benefit offered to customers for a limited time only.  May include free shipping, bonus rewards, free merchandise, gift cards, discounted service, free service, etc."},
+				"Incentive Type": { "type": "string", "description": "The categorization of the incentive offered to customers.", "enum": ["Accelerated Rewards", "Account Credit", "Bonus Rewards", "Cash", "Commission Bonus", "Coupon/Gift Card", "Discount", "Fee Waived", "Free Merchandise", "Free Service", "Sweepstakes Entry", "Travel"]},
+				"Incentive Value": { "type": "number", "description": "The amount of the incentive."}
+			}
+		}
+	}
+}
+

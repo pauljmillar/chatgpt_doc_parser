@@ -8,3 +8,6 @@ _pycache__
 
 
 #data directories have their own .gitignore files
+
+#directories
+/old_schema

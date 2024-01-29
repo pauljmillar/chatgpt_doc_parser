@@ -1,23 +1,11 @@
 {
-	"description": "A representation of a promotional offers for vehicle service.",
+	"description": "Promotional offers for service to vehicles: oil, brakes, tires, tune-ups, etc.",
 	"type": "object",
 	"properties": {
-		"Offer Origin": { "type": "string", "description": "The type of company that originated the offers.", "enum": ["Dealer", "Manufacturer", "Service Center"]},
-		"Service Offers": {
-			"type": "array",
-			"items": { "$ref": "#/$defs/Offer"}
+		"Offer Origin": { "type": "string", "description": "The type of company that originated the offers. For services like Oil, Brakes, Tires, this is likely a Service Center", "enum": ["Dealer", "Manufacturer", "Service Center"]},
+		"Product": {"type": "string", "description": "The product or service being promoted in the text.  If there is more than one product or service being offered, include only the first.  For example, this could be Tire Service, Oil Change, Brake Service, Scheduled Maintenance, or other auto services."}, 
+		"Offer Summary": {"type": "string", "description": "A summary of the offer related to the product, limited to 10 words.  If the Product offered is Oil Change, the OFfer Summary could be Limited-Time Discounted Auto Maintenance."}, 
+		"Offer Close Date": {"type": "string", "description": "When does the offer expire or end."}, 
+		"Social Media Mention": {"type": "string", "description": "List any social media that is mentioned, including Instagram, TikTok, Facebook."}
 		}
-	},	
-	"$defs": {
-		"Offer": {
-			"type": "object",
-			"description": "For each auto service offer.",
-			"properties": {
-				"Offer Description": { "type": "string", "description": "A brief text description of the offer. This could be oil change, tire rotation, tune-up, maintenance, repairs, warranty extension, etc."},
-				"Offer Expiration": { "type": "string", "description": "When does the promotional offer expire."},
-				"Offer Amount": { "type": "number", "description": "What is the maintenance or repair service offer amount?." },
-				"Warranty": { "type": "string", "description": "If there is a warranty being offered, how many miles and years."}
-			}
-		}
-	}
 }

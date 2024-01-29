@@ -1,0 +1,23 @@
+{
+	"description": "Promotional offers for service to vehicles: .",
+	"type": "object",
+	"properties": {
+		"Offer Origin": { "type": "string", "description": "The type of company that originated the offers. For services like Oil, Brakes, Tires, this is likely a Service Center", "enum": ["Dealer", "Manufacturer", "Service Center"]},
+		"Service Offers": {
+			"type": "array",
+			"items": { "$ref": "#/$defs/Offer"}
+		}
+	},	
+	"$defs": {
+		"Offer": {
+			"type": "object",
+			"description": "For each auto service offer.",
+			"properties": {
+				"Offer Description": { "type": "string", "description": "A brief text description of the offer. This could be oil change, tire rotation, tune-up, maintenance, repairs, warranty extension, etc."},
+				"Offer Expiration": { "type": "string", "description": "When does the promotional offer expire."},
+				"Offer Amount": { "type": "number", "description": "What is the maintenance or repair service offer amount?." },
+				"Warranty": { "type": "string", "description": "If there is a warranty being offered, how many miles and years."}
+			}
+		}
+	}
+}
