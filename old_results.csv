@@ -1,0 +1,7 @@
+id,status,my_constant_column
+test_gpt_extract.py::test_offer_industry,passed,foobar
+test_gpt_extract.py::test_primary_company,passed,foobar
+test_gpt_extract.py::test_mailing_type,failed,foobar
+test_gpt_extract.py::test_post_indicia,passed,foobar
+test_gpt_extract.py::test_post_type,failed,foobar
+test_gpt_extract.py::test_presorted,passed,foobar

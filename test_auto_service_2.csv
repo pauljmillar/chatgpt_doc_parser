@@ -1,0 +1,9 @@
+time,state,first_error_message,amount_of_failed_tests,test_1,test_1_msg
+2024-02-03 20:55:06,Success,,0,Success,
+2024-02-03 20:55:25,Success,,0,Success,
+2024-02-04 20:41:08,Success,,0,Success,
+2024-02-04 20:44:39,Success,,0,Success,
+2024-02-04 20:49:34,Success,,0,Success,
+2024-02-04 20:55:07,Success,,0,Success,
+2024-02-04 22:44:08,Failure,,2,Success,,Success,,Success,,Failure,Success,,Success,,Success,,Success,,Success,,Success,,Success,,Success,,Success,,Success,,Success,,Success,,Failure
+2024-02-04 22:44:58,Failure,,2,Success,,Success,,Success,,Failure,Success,,Success,,Failure,Success,,Success,,Success,,Success,,Success,,Success,,Success,,Success,,Success,,Success,

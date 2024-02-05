@@ -483,7 +483,7 @@ def analyze_texts():
             gen2Response=call_chatgpt(client, prompts[2]['prompt'], seed)
             print("Calling ChagGPT to get general 2")
             #write response to output file
-            with open(os.path.join(JSON_RESULT_DIRECTORY_PATH, filename), "w") as f:
+            with open(os.path.join(JSON_RESULT_DIRECTORY_PATH, filename), "a") as f:
                 f.write(gen2Response + "\n")
 
             #get industry prompt(s)

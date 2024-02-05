@@ -2,7 +2,7 @@
 	"description": "List of incentives promoted in a direct mail campaign",
 	"type": "object",
 	"properties": {
-		"Response Mechanism (Call to Action)": { "type": "string", "description": "All of the channels referenced by the text that the recipient may use to reply to an offer. May be multiple.", "enum": ["Customer Visit", "QR Code to scan", "Local call", "Augmented Reality", "800 Telephone Number", "Email", "Mail", "Mobile App", "Online", "Social Media", "Text Message", "No Response Requested"]},		
+		"Response Mechanism (Call to Action)": { "type": "string", "description": "All of the channels referenced by the text that the recipient may use to accept an offer. May be multiple.", "enum": ["Customer Visit", "QR Code to scan", "Local call", "Augmented Reality", "800 Telephone Number", "Email", "Mail", "Mobile App", "Online", "Social Media", "Text Message", "No Response Requested"]},		
 		"Incentives": {
 			"type": "array",
 			"items": { "$ref": "#/$defs/Incentive"}
