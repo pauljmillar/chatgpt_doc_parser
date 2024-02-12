@@ -47,7 +47,13 @@ def pytest_configure(config):
     test_results2['time'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     global all_test_results
-    all_test_results = {'test_auto_service_1': test_results, 'test_auto_service_2': test_results.copy()}
+    all_test_results = {'test_auto_service_1': test_results,
+                        'test_auto_service_2': test_results.copy(),
+                        'test_auto_service_3': test_results.copy(),
+                        'test_auto_warranty_1': test_results.copy(),
+                        'test_auto_warranty_2': test_results.copy(),
+                        'test_auto_warranty_3': test_results.copy()
+                        }
     #for each file, create the ordered dict, set in all_test_results
 
 def pytest_unconfigure(config):
@@ -64,8 +70,8 @@ def pytest_unconfigure(config):
         create_first_line = False
         line_to_be_written = list(value.values())
         csv_header = list(value.keys())
-        print('###############################')
-        print(value.keys())
+        #print('###############################')
+        #print(value.keys())
 
         try:
             filename = key + ".csv"
@@ -120,11 +126,12 @@ def pytest_runtest_makereport(item, call):
                     value['amount_of_failed_tests'] += 1
                     value[test_name] = f"Failure"
                     #test_results[test_name_msg] = f"{call.excinfo.typename} - {call.excinfo.value}"
-                    #test_results[test_name_msg] = f"{call.excinfo.value}"
+                    value[test_name_msg] = f"{call.excinfo.exconly(True)}".split('|')[0]
+                    value[test_name_msg] = value[test_name_msg].split('Actual:')[1]
 
-                    if value['first_error_message'] == "":
-                        if test_name_msg in value:
-                            value['first_error_message'] = value[test_name_msg]
+                    #if value['first_error_message'] == "":
+                    #    if test_name_msg in value:
+                    #        value['first_error_message'] = value[test_name_msg]
 
                 else:
                     value[test_name] = "Success"

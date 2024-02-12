@@ -1,0 +1,11 @@
+{
+	"description": "Offers for automobile warranty, vehicle warranty extension or continuation.",
+	"type": "object",
+	"properties": {
+		"Offer Origin": { "type": "string", "description": "The type of company that originated the offers. For vehicle warranty extension offers, this is likely considered a Service Center", "enum": ["Dealer", "Manufacturer", "Service Center"]},
+		"Service": {"type": "string", "description": "The product or service being promoted in the text - this is likely an Extended Auto Warranty."}, 
+		"Offer Summary": {"type": "string", "description": "A summary of the offer, limited to 10 words.  For an offer of extended vehicle warranty, the product could be simply: An extension to the vehicle warranty coverage."}, 
+		"Offer Close Date": {"type": "date", "description": "When does the offer expire or end."}, 
+		"Warranty": { "type": "string", "description": "If there is a warranty being offered, what is the most miles and most number of years."}
+		}
+}

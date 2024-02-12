@@ -121,8 +121,6 @@ def get_schema(industry, textBody):
             }
 
 
-
-
         case "Auto-Sales":
             schemaFilename = "auto_sales.schema.json"
             industrySeed = seedAutoSales
@@ -131,7 +129,7 @@ def get_schema(industry, textBody):
         case "Auto-Service":
             schemaFilename = "auto_service.schema.json"
             seed = seedAutoService
-            #read in json schema for general fields: to determine what industry the mail is for
+            #read in json schema for auto service fields
             with open(os.path.join(SCHEMA_DIRECTORY_PATH, schemaFilename), "r") as f:
                 schema = json.load(f)
             promptDict = {
@@ -139,9 +137,14 @@ def get_schema(industry, textBody):
             }
 
         case "Auto-Warranty":
-            schemaFilename = "auto_service.schema.json"
+            schemaFilename = "auto_warranty.schema.json"
             seed = seedAutoService
-            promptDict = autoWarrantyDict
+            #read in json schema for auto warranty fields:
+            with open(os.path.join(SCHEMA_DIRECTORY_PATH, schemaFilename), "r") as f:
+                schema = json.load(f)
+            promptDict = {
+                1: {'prompt': f'```{textBody}```\n\nWithin the given text, identify the main Service being offered - it may be an Extended Auto Warranty. Summarize the Offer presented in the text. Then read in the following JSON file, including the field names, their types, definitions, and enums.  Finally, identify those defined fields using the given text, and return them in a JSON representation that strictly follows this JSON schema:\n\n```{schema}```'}
+            }
 
         case "Telecom-Internet":
             schemaFilename = "telecom_internet.schema.json"
@@ -547,7 +550,7 @@ def analyze_texts():
             #new_row_id = log_to_db(gen1Response, response, filename, schemaFilename)
 
             # if success, move file to done
-            #os.replace(os.path.join(OCR_DIRECTORY_PATH, filename), os.path.join(OCR_DONE_DIRECTORY_PATH, filename))
+            os.replace(os.path.join(OCR_DIRECTORY_PATH, filename), os.path.join(OCR_DONE_DIRECTORY_PATH, filename))
             #print("Chatgpt calls complete.")
 
             #accuracy = get_accuracy(new_row_id)
@@ -677,8 +680,8 @@ def try_dict():
 
 def main():
     #ocr on images in the ocr directory
-    #do_unzips()
-    #do_ocr()
+    do_unzips()
+    do_ocr()
     analyze_texts()
     #check_accuracy()
     #init()
