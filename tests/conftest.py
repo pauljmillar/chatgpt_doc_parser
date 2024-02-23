@@ -11,7 +11,9 @@ failed = False
 statistics_csv_path = 'test_result.csv'
 all_test_results = None
 
-
+def pytest_collect_file(parent, file_path):
+    print(">>>>>>>")
+    print(file_path)
 
 def get_current_test():
     """Just a helper function to extract the current test"""
@@ -52,9 +54,15 @@ def pytest_configure(config):
                         'test_auto_service_3': test_results.copy(),
                         'test_auto_warranty_1': test_results.copy(),
                         'test_auto_warranty_2': test_results.copy(),
-                        'test_auto_warranty_3': test_results.copy()
+                        'test_auto_warranty_3': test_results.copy(),
+                        'test_auto_sales_1': test_results.copy(),
+                        'test_auto_sales_2': test_results.copy(),
+                        'test_auto_sales_3': test_results.copy(),
+                        'test_auto_sales_4': test_results.copy()
                         }
     #for each file, create the ordered dict, set in all_test_results
+
+
 
 def pytest_unconfigure(config):
 #def pytest_runtest_logfinish():
@@ -113,13 +121,14 @@ def pytest_runtest_makereport(item, call):
 
     if rep.when == "call":
         full_name, test_file, test_name = get_current_test()
+        #print("adding to all_test_result list:" + test_file)
         test_name_msg = f"{test_name}_msg"
 
         for key, value in all_test_results.items():
             #filename = key + ".csv"
             #update the results dict with the key name that equals the filename that this test is in
             if key == test_file:
-                print('##############'+key)
+                #print('##############'+key)
 
                 if rep.failed:
                     value['state'] = "Failure"
@@ -127,7 +136,8 @@ def pytest_runtest_makereport(item, call):
                     value[test_name] = f"Failure"
                     #test_results[test_name_msg] = f"{call.excinfo.typename} - {call.excinfo.value}"
                     value[test_name_msg] = f"{call.excinfo.exconly(True)}".split('|')[0]
-                    value[test_name_msg] = value[test_name_msg].split('Actual:')[1]
+                    if len(value[test_name_msg].split('Actual:')) > 1:
+                        value[test_name_msg] = value[test_name_msg].split('Actual:')[1]
 
                     #if value['first_error_message'] == "":
                     #    if test_name_msg in value:

@@ -1,0 +1,10 @@
+{
+	"description": "Postal properties of a direct mail campaign",
+	"type": "object",
+	"properties": {
+		"Post Indicia": { "type": "string", "description": "Set to Permit if it includes the words POSTAGE and PAID, or PERMIT, or the terms PPRSRT BPM or PERIODICAL or Cubic or CUBIC or cubic. Otherwise leave blank", "enum":["Permit", ""]},
+		"Post Type": { "type": "string", "description": "The type of postage on the outer envelope of the mail pack that indicates how the mail was sent. If the postage on a piece is partially damaged, and you cannot tell which post type to select, please mark the Post Type as Standard. For pieces that do not have postage, or the entire postage section is missing, mark Post Type as By Hand.", "enum":["Standard", "By Hand", "First Class"]},
+		"Presorted": { "type": "string", "description": "Set to Y if any of these words exist in the text: PRSRT, Presorted, PRESORTED, Presort, PRESORT. Otherwise, set to N.", "enum":["Y", "N"]},
+		"Pre-screen Opt Out Disclosure": { "type": "string", "description": "The disclosure contained on media piece that informs the consumer of his or her right to stop receiving Pre-Screened offers. If not present, set value to No"}
+	}
+}

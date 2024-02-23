@@ -1,0 +1,2 @@
+'```{textBody}```\n\nWithin the given text, identify the main Service being offered - it may be an Extended Auto Warranty. Summarize the Offer presented in the text. Then read in the following JSON file, including the field names, their types, definitions, and enums.  Finally, identify those defined fields using the given text, and return them in a JSON representation that strictly follows this JSON schema:\n\n```{schema}```'
+

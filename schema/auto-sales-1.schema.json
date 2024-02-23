@@ -1,0 +1,26 @@
+{
+	"description": "Information about the vehicles presented.",
+	"type": "object",
+	"properties": {
+		"Offer Origin": { "type": "string", "description": "The type of company that originated the offers. Dealer: The piece was sent from a business that sells new and/or used vehicles to consumers. Manufacturer: The piece was sent from a business that is responsible for manufacturing, importing and/or distributing cars. Service Center: The piece was sent from a business that performs the repairs and/or maintenance on vehicles;", "enum": ["Dealer", "Manufacturer", "Service Center"]},
+		"Vehicle Brand": { "type": "string", "description": "The manufacturer of the vehicles listed, including (but not limited to): Ford, Chevrolet, Honda, Hyundai, Tesla, Nissan, Toyota, Kia."},
+		"Vehicles": {
+			"type": "array",
+			"items": { "$ref": "#/$defs/Vehicle"}
+		},
+		"Vehicle Representation": { "type": "string", "enum": ["Division Line-Up", "Single", "Cross Division"], "description": "If multiple vehicles are mentioned, set to Division Line-Up."},
+		"Warranty": { "type": "string", "description": "If there is a warranty being offered, how many miles and years. If there are multiple, list only the longest."},
+		"Vehicle Launch": { "type": "string", "description": "Whether the piece contains information about a newly revised vehicle or a totally new car which has been added to the manufacturer’s line-up. Only a Manufacturer can launch a vehicle.", "enum": ["Yes", "No"]}
+	},	
+	"$defs": {
+		"Vehicle": {
+			"type": "object",
+			"description": "Details about each vehicle listed in the text",
+			"properties": {
+				"Vehicle Model": { "type": "string", "description": "Vehicle model."},
+				"Vehicle Type": { "type": "string", "description": "Vehicle type.", "enum": ["ATV", "Compact/Economy", "Coupe", "Crossover", "Luxury Coupe", "Luxury Crossover", "Luxury Full Size", "Luxury Minivan", "Luxury Sedan", "Luxury Sport Utility Truck", "Luxury Sport Wagon", "Luxury SUV", "Luxury Truck", "Minivan", "Motorcycle", "RV", "Scooter", "Sedan/Midsize", "Sport Utility Truck", "Sport Wagon", "SUV", "Truck", "Van"]},
+				"Vehicle Fuel Type": { "type": "string", "description": "Vehicle fuel type", "enum": ["gas", "electric", "hybrid"]}
+			}
+		}
+	}
+}

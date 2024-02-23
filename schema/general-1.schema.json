@@ -1,0 +1,10 @@
+{
+	"description": "The industry of the text and the companies involved",
+	"type": "object",
+	"properties": {
+		"Offer Industry": { "type": "string", "description": "Which one of the following industries is the offer for: Auto-Sales, Auto-Service, Auto-Warranty, Banking-Checking, Banking-Savings, Banking-Money Market, Banking-Debit Cards, Banking-Online, Banking-Certificates of Deposit, Banking-Guaranteed Investments, Banking-General, Insurance-Life, Insurance-Health, Insurance-Travel, Insurance-Personal Property and Casualty, Insurance-Commercial Property and Casualty, Insurance-General, Credit Cards, Investment, Mortgage and Loan, Retail, Shipping, Technology, Telecoms, Tobacco, Travel and Leisure."},
+		"Primary Company": { "type": "string", "description": "The company who has sent this offer"},
+		"Secondary Company": { "type": "string", "description": "The company that is also taking part in the offer, but is not the Primary servicing company."},
+		"Business Type": { "type": "string", "description": "The type of market that the media piece is probably targeting.", "enum": ["Consumer", "Business", "Agent"]}	
+	}
+}

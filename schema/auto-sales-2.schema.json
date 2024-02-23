@@ -1,0 +1,13 @@
+{
+	"description": "Details about the vehicle promotional offers.",
+	"type": "object",
+	"properties": {
+		"Event Name": { "type": "string", "description": "The name of the sales event, if one is present, such as Year End Winter Clearance.  If no specific event is named, this should be set to simply Automotive Sales."},
+		"Offer Description": { "type": "string", "description": "In 10 words or less, a summary of the primary offer presented. For example: Purchase a vehicle with 0% APR for 60 months."},
+		"Vehicle Financing Type": { "type": "string", "description": "If the piece includes financing options for either purchasing (Loan) a vehicle, leasing (Lease) a vehicle, or both (Lease,Loan)."},
+		"Offer Loan Term": { "type": "number", "description": "If there is a Loan or Lease offer on the vehicle, how many months?"},
+		"Offer APR": { "type": "number", "description": "The annual percentage rate (APR) for the loan, expressed as a percentage. Sometimes referenced as 0% Financing, or offer APR.(%). If there are multiple mentioned, include only the lowest."},
+		"Offer Expiration": { "type": "date", "description": "When does the promotional offer expire."},
+		"Purchase Discount": { "type": "number", "description": "The dollar amount discounted from the Manufacturer Suggested Retail Price (MSRP). May also be referred to as Bonus Cash or Discount."}
+	}
+}

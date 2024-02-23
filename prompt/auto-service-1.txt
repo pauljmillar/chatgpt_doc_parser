@@ -1,0 +1,1 @@
+'```{textBody}```\n\nWithin the given text, identify the Offer Description and the other attributes described in following JSON schema, and provide them in a JSON representation that strictly follows this schema:\n\n```{schema}```'

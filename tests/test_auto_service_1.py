@@ -15,7 +15,7 @@ def setup_base(filename, industry, num):
     with open(os.path.join(gpt_extract.OCR_DONE_DIRECTORY_PATH, filename), "r") as f:
         page_text = f.read()
     #get prompt
-    prompts, seed = gpt_extract.get_schema(industry, page_text)
+    prompts, seed = gpt_extract.get_prompts(industry, page_text)
     response = gpt_extract.call_chatgpt(client, prompts[num]['prompt'], seed)
     return json.loads(response)
 
@@ -30,6 +30,10 @@ def setup_general_2():
 
 @pytest.fixture(scope="session")
 def setup_general_3():
+    return setup_base(test_file, 'General', 3)
+
+@pytest.fixture(scope="session")
+def setup_3():
     return setup_base(test_file, 'Auto-Service', 1)
 
 ##################################################################
@@ -43,21 +47,22 @@ def test_category(setup_general_1):
 def test_primary_company(setup_general_1):
     assert "valvoline" in setup_general_1['Primary Company'].lower(), f"Actual: {setup_general_1['Primary Company']}|"
 
-def test_mailing_type(setup_general_1):
-    assert setup_general_1['Mailing Type'] == 'Acquisition', f"Actual: {setup_general_1['Mailing Type']}|"
-
-def test_post_indicia(setup_general_1):
-    assert setup_general_1['Post Indicia'] == 'Permit', f"Actual: {setup_general_1['Post Indicia']}|"
+##################################################################
+def test_post_indicia(setup_general_3):
+    assert setup_general_3['Post Indicia'] == 'Permit', f"Actual: {setup_general_3['Post Indicia']}|"
 
 #def test_post_type(setup_general_1):
 #    assert setup_general_1['Post Type'] == 'Standard'
 
-def test_presorted(setup_general_1):
-    assert setup_general_1['Presorted'] == 'Y', f"Actual: {setup_general_1['Presorted']}|"
+def test_presorted(setup_general_3):
+    assert setup_general_3['Presorted'] == 'Y', f"Actual: {setup_general_3['Presorted']}|"
 
 #########################################################
 def test_call_to_action(setup_general_2):
-    assert "Customer Visit" in setup_general_2['Response Mechanism (Call to Action)'], f"Actual: {setup_general_2['Response Mechanism (Call to Action)']}|"
+    assert "Customer Visit" in setup_general_2['Response Mechanism'], f"Actual: {setup_general_2['Response Mechanism']}|"
+
+def test_mailing_type(setup_general_2):
+    assert setup_general_2['Mailing Type'] == 'Acquisition', f"Actual: {setup_general_2['Mailing Type']}|"
 
 def test_primary_incentive_type(setup_general_2):
     #check whether the main incentive was returned in the list of incentives
@@ -81,14 +86,14 @@ def test_primary_incentive_text(setup_general_2):
                 assert "15 Off" in incentive['Incentive Text'], f"Actual: {incentive['Incentive Text']}|"
 
 #########################################################
-def test_offer_origin(setup_general_3):
-    assert setup_general_3['Offer Origin'] == 'Service Center', f"Actual: {setup_general_3['Offer Origin']}|"
+def test_offer_origin(setup_3):
+    assert setup_3['Offer Origin'] == 'Service Center', f"Actual: {setup_3['Offer Origin']}|"
 
-def test_product(setup_general_3):
-    assert "oil change" in setup_general_3['Product'].lower(), f"Actual: {setup_general_3['Product'].lower()}|"
+def test_product(setup_3):
+    assert "oil change" in setup_3['Product'].lower(), f"Actual: {setup_3['Product'].lower()}|"
 
-def test_offer_summary(setup_general_3):
-    assert "oil change" in setup_general_3['Offer Summary'].lower() or "maintenance" in setup_general_3['Offer Summary'].lower(), f"Actual: {setup_general_3['Offer Summary']}|"
+def test_offer_summary(setup_3):
+    assert "oil change" in setup_3['Offer Summary'].lower() or "maintenance" in setup_3['Offer Summary'].lower(), f"Actual: {setup_3['Offer Summary']}|"
 
-def test_offer_close_date(setup_general_3):
-    assert setup_general_3['Offer Close Date'] == '4/18/2023', f"Actual: {setup_general_3['Offer Close Date']}|"
+def test_offer_close_date(setup_3):
+    assert setup_3['Offer Close Date'] == '4/18/2023', f"Actual: {setup_3['Offer Close Date']}|"

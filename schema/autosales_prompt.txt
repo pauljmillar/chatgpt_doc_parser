@@ -1,2 +1,0 @@
-            prompt = f"```{page_text}```\n\nThe text above is an advertisement for automobiles.  Interpret the text, and identify each vehicle being promoted using the list of Vehicle Types in the following JSON schema.  Also, interpret the details of the offer for each vehicle, including Offer Description and Offer Expiration.  Then determine the rest of the fields described in the JSON schema. \n\nFinally, return all of this information in a format that strictly follows this schema:\n\n```{schema}```"
-			

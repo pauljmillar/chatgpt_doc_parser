@@ -6,6 +6,8 @@ from openai import OpenAI
 import gpt_extract
 
 test_file = "20220212-011483.txt"
+#https://www.comperemedia.com/one_search/campaign/20220212-011483/
+
 
 def setup_base(filename, industry, num):
     client = OpenAI(
@@ -15,7 +17,7 @@ def setup_base(filename, industry, num):
     with open(os.path.join(gpt_extract.OCR_DONE_DIRECTORY_PATH, filename), "r") as f:
         page_text = f.read()
     #get prompt
-    prompts, seed = gpt_extract.get_schema(industry, page_text)
+    prompts, seed = gpt_extract.get_prompts(industry, page_text)
     response = gpt_extract.call_chatgpt(client, prompts[num]['prompt'], seed)
     return json.loads(response)
 
@@ -30,6 +32,10 @@ def setup_general_2():
 
 @pytest.fixture(scope="session")
 def setup_general_3():
+    return setup_base(test_file, 'General', 3)
+
+@pytest.fixture(scope="session")
+def setup_3():
     return setup_base(test_file, 'Auto-Service', 1)
 
 ##################################################################
@@ -43,22 +49,23 @@ def test_category(setup_general_1):
 def test_primary_company(setup_general_1):
     assert "midas" in setup_general_1['Primary Company'].lower(), f"Actual: {setup_general_1['Primary Company']}|"
 
-def test_mailing_type(setup_general_1):
-    assert setup_general_1['Mailing Type'] == 'Acquisition', f"Actual: {setup_general_1['Mailing Type']}|"
-
-def test_post_indicia(setup_general_1):
-    assert setup_general_1['Post Indicia'] == 'Permit', f"Actual: {setup_general_1['Post Indicia']}|"
+##################################################################
+def test_post_indicia(setup_general_3):
+    assert setup_general_3['Post Indicia'] == 'Permit', f"Actual: {setup_general_3['Post Indicia']}|"
 
 #def test_post_type(setup_general_1):
 #    assert setup_general_1['Post Type'] == 'Standard'
 
-def test_presorted(setup_general_1):
-    assert setup_general_1['Presorted'] == 'Y', f"Actual: {setup_general_1['Presorted']}|"
+def test_presorted(setup_general_3):
+    assert setup_general_3['Presorted'] == 'Y', f"Actual: {setup_general_3['Presorted']}|"
 
 #########################################################
 def test_call_to_action(setup_general_2):
     #assert "Customer Visit" in setup_general_2['Response Mechanism (Call to Action)'] or "QR Code" in setup_general_2['Response Mechanism (Call to Action)'], f"Actual: {setup_general_2['Response Mechanism (Call to Action)']}|"
-    assert "Customer Visit" in setup_general_2['Response Mechanism (Call to Action)'], f"Actual: {setup_general_2['Response Mechanism (Call to Action)']}|"
+    assert "Customer Visit" in setup_general_2['Response Mechanism'], f"Actual: {setup_general_2['Response Mechanism']}|"
+
+def test_mailing_type(setup_general_2):
+    assert setup_general_2['Mailing Type'] == 'Acquisition', f"Actual: {setup_general_2['Mailing Type']}|"
 
 def test_incentive_1(setup_general_2):
     #loop through incentives
@@ -153,14 +160,14 @@ def test_incentive_6(setup_general_2):
 
 
 #########################################################
-def test_offer_origin(setup_general_3):
-    assert setup_general_3['Offer Origin'] == 'Service Center', f"Actual: {setup_general_3['Offer Origin']}|"
+def test_offer_origin(setup_3):
+    assert setup_3['Offer Origin'] == 'Service Center', f"Actual: {setup_3['Offer Origin']}|"
 
-def test_product(setup_general_3):
-    assert "service" in setup_general_3['Product'].lower(), f"Actual: {setup_general_3['Product']}|"
+def test_product(setup_3):
+    assert "service" in setup_3['Product'].lower(), f"Actual: {setup_3['Product']}|"
 
-def test_offer_summary(setup_general_3):
-    assert "save" or "discount" in setup_general_3['Offer Summary'].lower() and "auto" or "service" in setup_general_3['Offer Summary'].lower(), f"Actual: {setup_general_3['Offer Summary']}|"
+def test_offer_summary(setup_3):
+    assert "save" or "discount" in setup_3['Offer Summary'].lower() and "auto" or "service" in setup_3['Offer Summary'].lower(), f"Actual: {setup_3['Offer Summary']}|"
 
-def test_offer_close_date(setup_general_3):
-    assert setup_general_3['Offer Close Date'] == '4/30/22', f"Actual: {setup_general_3['Offer Close Date']}|"
+def test_offer_close_date(setup_3):
+    assert setup_3['Offer Close Date'] == '4/30/22', f"Actual: {setup_3['Offer Close Date']}|"

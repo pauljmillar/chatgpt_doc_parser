@@ -1,0 +1,2 @@
+'```{textBody}```\n\nThat text above is marketing material.  Determine the Mailing Type, Response Mechanism, and Incentives presented in the material. Then, read in the following JSON file. It defines the Mailing Type, Response Mechanism, and Incentive attributes.  Finally, populate the attributes from the JSON file using the given text, and return them in a JSON representation that strictly follows this JSON schema:\n\n```{schema}```'
+

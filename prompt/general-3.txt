@@ -1,0 +1,2 @@
+'```{textBody}```\n\nThe text above is promotional material. From the text, determine the direct mail attributes, which are listed in the following JSON schema.  Then, read the following JSON schema to learn the description, type, and enum for Post Indicia, Post Type, Presorted, Pre-screen Opt Out Disclosure.  \n\nFinally, populate the attributes from the JSON file using the given text, and return them in a JSON representation that strictly follows this JSON schema:\n\n```{schema}```'
+

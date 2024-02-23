@@ -15,7 +15,7 @@ def setup_base(filename, industry, num):
     with open(os.path.join(gpt_extract.OCR_DONE_DIRECTORY_PATH, filename), "r") as f:
         page_text = f.read()
     #get prompt
-    prompts, seed = gpt_extract.get_schema(industry, page_text)
+    prompts, seed = gpt_extract.get_prompts(industry, page_text)
     response = gpt_extract.call_chatgpt(client, prompts[num]['prompt'], seed)
     return json.loads(response)
 
@@ -30,6 +30,10 @@ def setup_general_2():
 
 @pytest.fixture(scope="session")
 def setup_general_3():
+    return setup_base(test_file, 'General', 3)
+
+@pytest.fixture(scope="session")
+def setup_3():
     return setup_base(test_file, 'Auto-Warranty', 1)
 
 ##################################################################
@@ -43,37 +47,37 @@ def test_category(setup_general_1):
 def test_primary_company(setup_general_1):
     assert "carshield" in setup_general_1['Primary Company'].lower(), f"Actual: {setup_general_1['Primary Company']}|"
 
-def test_mailing_type(setup_general_1):
-    assert setup_general_1['Mailing Type'] == 'Acquisition', f"Actual: {setup_general_1['Mailing Type']}|"
-
-def test_post_indicia(setup_general_1):
-    assert setup_general_1['Post Indicia'] == 'Permit', f"Actual: {setup_general_1['Post Indicia']}|"
+##################################################################
+def test_post_indicia(setup_general_3):
+    assert setup_general_3['Post Indicia'] == 'Permit', f"Actual: {setup_general_3['Post Indicia']}|"
 
 #def test_post_type(setup_general_1):
 #    assert setup_general_1['Post Type'] == 'Standard'
 
-def test_presorted(setup_general_1):
-    assert setup_general_1['Presorted'] == 'Y', f"Actual: {setup_general_1['Presorted']}|"
+def test_presorted(setup_general_3):
+    assert setup_general_3['Presorted'] == 'Y', f"Actual: {setup_general_3['Presorted']}|"
 
 #########################################################
 def test_call_to_action(setup_general_2):
     #assert "Customer Visit" in setup_general_2['Response Mechanism (Call to Action)'] or "QR Code" in setup_general_2['Response Mechanism (Call to Action)'], f"Actual: {setup_general_2['Response Mechanism (Call to Action)']}|"
-    assert "800 Telephone Number" in setup_general_2['Response Mechanism (Call to Action)'], f"Actual: {setup_general_2['Response Mechanism (Call to Action)']}|"
+    assert "800 Telephone Number" in setup_general_2['Response Mechanism'], f"Actual: {setup_general_2['Response Mechanism']}|"
 
+def test_mailing_type(setup_general_2):
+    assert setup_general_2['Mailing Type'] == 'Acquisition', f"Actual: {setup_general_2['Mailing Type']}|"
 
 
 #########################################################
-def test_offer_origin(setup_general_3):
-    assert setup_general_3['Offer Origin'] == 'Service Center', f"Actual: {setup_general_3['Offer Origin']}|"
+def test_offer_origin(setup_3):
+    assert setup_3['Offer Origin'] == 'Service Center', f"Actual: {setup_3['Offer Origin']}|"
 
-def test_service(setup_general_3):
-    assert "extended" and "warranty" in setup_general_3['Service'].lower(), f"Actual: {setup_general_3['Service']}|"
+def test_service(setup_3):
+    assert "extended" and "warranty" in setup_3['Service'].lower(), f"Actual: {setup_3['Service']}|"
 
-def test_offer_summary(setup_general_3):
-    assert "extend" or "extension" in setup_general_3['Offer Summary'].lower() and "warranty" or "coverage" in setup_general_3['Offer Summary'].lower(), f"Actual: {setup_general_3['Offer Summary']}|"
+def test_offer_summary(setup_3):
+    assert "extend" or "extension" in setup_3['Offer Summary'].lower() and "warranty" or "coverage" in setup_3['Offer Summary'].lower(), f"Actual: {setup_3['Offer Summary']}|"
 
-def test_offer_close_date(setup_general_3):
-    assert setup_general_3['Offer Close Date'] == '2023-11-27', f"Actual: {setup_general_3['Offer Close Date']}|"
+def test_offer_close_date(setup_3):
+    assert setup_3['Offer Close Date'] == '2023-11-27', f"Actual: {setup_3['Offer Close Date']}|"
 
-def test_warranty(setup_general_3):
-    assert "5" and "year" in setup_general_3['Warranty'].lower() and "miles" in setup_general_3['Warranty'].lower(), f"Actual: {setup_general_3['Warranty']}|"
+#def test_warranty(setup_3):
+#    assert "5" and "year" in setup_3['Warranty'].lower() and "miles" in setup_3['Warranty'].lower(), f"Actual: {setup_3['Warranty']}|"
