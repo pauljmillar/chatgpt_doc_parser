@@ -23,6 +23,7 @@ from io import StringIO
 from supabase import create_client, Client
 from pathlib import Path
 import scrubadub, scrubadub_spacy #, scrubadub_address
+import python_jsonschema_objects as pjs
 
 from openai import OpenAI
 #from chatgpt_wrapper import ChatGPT
@@ -50,7 +51,19 @@ OCR_DONE_DIRECTORY_PATH = 'ocr_done'
 JSON_RESULT_DIRECTORY_PATH = 'json_result'
 SCHEMA_DIRECTORY_PATH = 'schema'
 PROMPT_DIRECTORY_PATH = 'prompt'
+SEED_PARAMETER = 2242024
 total_cost = 0
+
+def test_json_response_format():
+    file="20231206-0111176.txt"
+    with open(os.path.join(JSON_RESULT_DIRECTORY_PATH, file), "r") as f:
+        resp = json.load(f)
+
+    print(resp)
+    print(resp['general-1']['Primary Company'])
+    print(resp['auto-sales-2']['Offer Description'])
+    print(resp.get('auto-sales-2').get('Offer Description'))
+    print(resp.get('auto-sales-2').get('Offer amount', 0))
 
 
 def do_unzips():
@@ -74,9 +87,9 @@ def do_unzips():
 
 def get_prompts(industry, textBody):
     schemaFilename = ""
-    seedAutoSales = 202402
-    seedAutoService = 202403
-    seedGeneral = 202401
+    #seedAutoSales = 202402
+    #seedAutoService = 202403
+    #seedGeneral = 202401
 
     cnt=1
     promptDict={}
@@ -96,11 +109,11 @@ def get_prompts(industry, textBody):
             cnt+=1
 
     #print(promptDict)
-    return promptDict, seedGeneral
+    return promptDict
 
 
 
-def call_chatgpt(client, prompt, seed):
+def call_chatgpt(client, prompt):
 
     gptModel = GPT_MODEL_35_TURBO
     #gptModel = GPT_MODEL_40_PREVIEW
@@ -108,7 +121,7 @@ def call_chatgpt(client, prompt, seed):
     chat_completion = client.chat.completions.create(
         model=gptModel,
         response_format={"type": "json_object"},
-        seed=seed,
+        seed=SEED_PARAMETER,
         temperature=0.1,
         messages=[
             #{"role": "system", "content": "Provide output in valid JSON"},
@@ -118,7 +131,7 @@ def call_chatgpt(client, prompt, seed):
     )
     # prompt, response = scrape_via_prompt(chat, page_text, schema)
     response = chat_completion.choices[0].message.content
-    print("fingerprint:" + chat_completion.system_fingerprint + " seed:" + str(seed))
+    print("fingerprint:" + chat_completion.system_fingerprint + " seed:" + str(SEED_PARAMETER))
     prompt_tokens = chat_completion.usage.prompt_tokens
     completion_tokens = (
             chat_completion.usage.total_tokens - chat_completion.usage.prompt_tokens
@@ -167,7 +180,7 @@ def scrub_text(text):
     return out
 
 def analyze_texts():
-
+    prompt_key = 'General'
     client = OpenAI(
         api_key=CHATGPT_KEY
     )
@@ -183,42 +196,51 @@ def analyze_texts():
                 page_text = f.read()
 
             #get general prompts
-            prompts, seed = get_prompts('General', page_text)
+            prompts = get_prompts(prompt_key, page_text)
             #call gpt1
             print("Calling ChagGPT to get general 1 info")
-            response=call_chatgpt(client, prompts[1]['prompt'], seed)
+            response=call_chatgpt(client, prompts[1]['prompt'])
             #write response to output file
             with open(os.path.join(JSON_RESULT_DIRECTORY_PATH, filename), "w") as f:
-                f.write(response)
-            #map response to industry field
+                f.write("{\n'" + prompt_key + "': " + response)
+
+            #map response and get industry field
             wjdata = json.loads(response)
-            #print(wjdata)
-            print("Industry:"+wjdata['Offer Industry'])
+            prompt_key = wjdata['Offer Industry']
+            print("Industry:"+ prompt_key)
 
 
             #call gpt with general prompt 2 and 3, appending results to file
             print("Calling ChagGPT to get general 2")
-            response=call_chatgpt(client, prompts[2]['prompt'], seed)
+            response=call_chatgpt(client, prompts[2]['prompt'])
             with open(os.path.join(JSON_RESULT_DIRECTORY_PATH, filename), "a") as f:
-                f.write(",\n" + response)
+                #f.write(",\n" + response)
+                f.write(",\n'" + prompt_key + "': " + response)
 
             print("Calling ChagGPT to get general 3")
-            response=call_chatgpt(client, prompts[3]['prompt'], seed)
+            response=call_chatgpt(client, prompts[3]['prompt'])
             with open(os.path.join(JSON_RESULT_DIRECTORY_PATH, filename), "a") as f:
-                f.write(",\n" + response)
+                #f.write(",\n" + response)
+                f.write(",\n'" + prompt_key + "': " + response)
 
             #get industry prompt(s)
-            prompts, seed = get_prompts(wjdata['Offer Industry'], page_text)
+            prompts = get_prompts(prompt_key, page_text)
 
             #call gpt for each industry prompt in loop
             for p in prompts:
                 #print(prompts[p]['prompt'])
 
                 print("Calling ChatGPT to extract industry fields ")
-                response=call_chatgpt(client, prompts[p]['prompt'], seed)
+                response=call_chatgpt(client, prompts[p]['prompt'])
 
                 with open(os.path.join(JSON_RESULT_DIRECTORY_PATH, filename), "a") as f:
-                    f.write(",\n" + response)
+                    #f.write(",\n" + response)
+                    f.write(",\n'" + prompt_key + "': " + response)
+
+            # add closing json bracket
+            with open(os.path.join(JSON_RESULT_DIRECTORY_PATH, filename), "a") as f:
+                # f.write(",\n" + response)
+                f.write("\n}")
 
             # if success, move file to done
             os.replace(os.path.join(OCR_DIRECTORY_PATH, filename), os.path.join(OCR_DONE_DIRECTORY_PATH, filename))
@@ -284,6 +306,7 @@ def main():
     do_unzips()
     do_ocr()
     analyze_texts()
+    #test_json_response_format()
     print("Total Cost: " + str(total_cost))
     #print("###############################")
     #scrub_text(text)
